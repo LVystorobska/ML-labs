@@ -1,0 +1,32 @@
+digraph Tree {
+node [shape=box] ;
+0 [label="CALCULATION_METHOD_ID <= 0.207\ngini = 0.832\nsamples = 24165\nvalue = [3626, 3662, 3866, 4241, 4389, 4381]"] ;
+1 [label="lifetime <= 0.188\ngini = 0.813\nsamples = 14515\nvalue = [3296, 3428, 2841, 2178, 1559, 1213]"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="instagram_volume <= -0.23\ngini = 0.741\nsamples = 9280\nvalue = [3127, 3079, 1464, 743, 444, 423]"] ;
+1 -> 2 ;
+3 [label="gini = 0.783\nsamples = 5902\nvalue = [1877, 1422, 1096, 675, 416, 416]"] ;
+2 -> 3 ;
+4 [label="gini = 0.61\nsamples = 3378\nvalue = [1250, 1657, 368, 68, 28, 7]"] ;
+2 -> 4 ;
+5 [label="instagram_volume <= -0.302\ngini = 0.782\nsamples = 5235\nvalue = [169, 349, 1377, 1435, 1115, 790]"] ;
+1 -> 5 ;
+6 [label="gini = 0.771\nsamples = 3893\nvalue = [99, 126, 825, 1112, 977, 754]"] ;
+5 -> 6 ;
+7 [label="gini = 0.731\nsamples = 1342\nvalue = [70, 223, 552, 323, 138, 36]"] ;
+5 -> 7 ;
+8 [label="fb_volume <= -0.361\ngini = 0.747\nsamples = 9650\nvalue = [330, 234, 1025, 2063, 2830, 3168]"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="SCORING_VERY LOW <= 1.096\ngini = 0.687\nsamples = 5666\nvalue = [164, 95, 408, 840, 1580, 2579]"] ;
+8 -> 9 ;
+10 [label="gini = 0.715\nsamples = 3956\nvalue = [114, 64, 317, 701, 1247, 1513]"] ;
+9 -> 10 ;
+11 [label="gini = 0.563\nsamples = 1710\nvalue = [50, 31, 91, 139, 333, 1066]"] ;
+9 -> 11 ;
+12 [label="instagram_volume <= -0.287\ngini = 0.759\nsamples = 3984\nvalue = [166, 139, 617, 1223, 1250, 589]"] ;
+8 -> 12 ;
+13 [label="gini = 0.74\nsamples = 2846\nvalue = [107, 42, 323, 822, 1008, 544]"] ;
+12 -> 13 ;
+14 [label="gini = 0.752\nsamples = 1138\nvalue = [59, 97, 294, 401, 242, 45]"] ;
+12 -> 14 ;
+}

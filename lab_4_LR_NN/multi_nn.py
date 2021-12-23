@@ -15,7 +15,7 @@ X_train, X_valid, y_train, y_valid = train_test_split(data, labels,
 y_train = y_train.to_numpy().astype(int)
 
 class MultilayerNN():
-    def __init__(self, sizes, data_shape, epochs=1000, rate=0.1):
+    def __init__(self, sizes, data_shape, epochs=600, rate=0.1):
         self.input_size = sizes[0]
         self.layer_1_size = sizes[1]
         self.output_size = sizes[2]
@@ -38,12 +38,19 @@ class MultilayerNN():
     def sigmoid_derivative(self, x):
         return (np.exp(-x))/((np.exp(-x)+1)**2)
 
-
     def ReLU(self, Z):
         return np.maximum(Z, 0)
 
     def ReLU_deriv(self, Z):
         return Z > 0
+
+    def tanh(self, x):
+        t=(np.exp(x)-np.exp(-x))/(np.exp(x)+np.exp(-x))
+        return t
+
+    def tanh_derivative(self, x):
+        dt=1-self.tanh(x)**2
+        return dt
 
     def forward(self, w1, b1, w2, b2, X):
         input_weighted = w1.dot(X.T) + b1
@@ -59,7 +66,7 @@ class MultilayerNN():
         delta_bias2 = 1 / self.m * np.sum(dZ2.T)
         delta_input_weighted = w2.T.dot(dZ2) * self.ReLU_deriv(Z1)
         delta_w1 = 1 / self.m * delta_input_weighted.dot(X)
-        delta_bias1 = 1 / self.m
+        delta_bias1 = (1 / self.m) * np.sum(delta_input_weighted)
         return delta_w1, delta_bias1, delta_w2, delta_bias2
 
     def update_weights(self, w1, b1, w2, b2, delta_w1, delta_bias1, delta_w2, delta_bias2, alpha):
@@ -71,7 +78,7 @@ class MultilayerNN():
 
     def make_predictions(self, X, w1, b1, w2, b2):
         _, _, _, out_activated = self.forward(w1, b1, w2, b2, X)
-        predictions = np.where(out_activated > 0.1, 1, 0)
+        predictions = np.where(out_activated > 0.5, 1, 0)
         print('Out activated:', predictions)
         return predictions
 
@@ -85,16 +92,19 @@ class MultilayerNN():
             w1, b1, w2, b2 = self.update_weights(w1, b1, w2, b2, delta_w1, delta_bias1, delta_w2, delta_bias2, self.rate)
             if i % 50 == 0:
                 print("Iteration: ", i)
-                predictions = np.where(out_activated > 0.1, 1, 0)
-                print('Test sample accuracy:', f1_score(Y.T, predictions[0]))
+                predictions = np.where(out_activated > 0.5, 1, 0)
+                print('Train sample accuracy:', f1_score(Y.T, predictions[0]))
         return w1, b1, w2, b2
 
 
 
 
-network = MultilayerNN(sizes=[29, 100, 1], data_shape = df_main.shape)
+network = MultilayerNN(sizes=[29, 100, 1], data_shape = df_main.shape, epochs=600, rate=0.1)
 w1, b1, w2, b2 = network.train(X=X_train, Y=y_train.T)
 
 
 test_predictions = network.make_predictions(X_valid, w1, b1, w2, b2)
 print('Test sample accuracy:', f1_score(y_valid, test_predictions[0]))
+
+# 0.5 => 65.8 % - 400 epochs
+# 0.5 => 67 % - 600 epochs
